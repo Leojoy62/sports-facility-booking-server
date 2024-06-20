@@ -3,15 +3,15 @@ import { TBooking } from "./booking.interface";
 
 const bookingSchema = new Schema<TBooking>({
   date: {
-    type: Date,
+    type: String,
     required: true,
   },
   startTime: {
-    type: Date,
+    type: String,
     required: true,
   },
   endTime: {
-    type: Date,
+    type: String,
     required: true,
   },
   user: {
@@ -28,8 +28,8 @@ const bookingSchema = new Schema<TBooking>({
   },
   isBooked: {
     type: String,
-    enum: ["confirmed", "unconfirmed", "cancelled"],
+    enum: ["confirmed", "unconfirmed", "canceled"],
   },
 });
 
-export const Booking = model<TBooking>("User", bookingSchema);
+export const Booking = model<TBooking>("Booking", bookingSchema);

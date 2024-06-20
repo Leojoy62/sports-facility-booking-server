@@ -10,23 +10,27 @@ const createFacilityIntoDB = async (payload: TFacility) => {
     throw new Error(error);
   }
 };
+const getAllFacilitiesFromDB = async () => {
+  try {
+    const facilities = await Facility.find({ isDeleted: false });
+
+    return facilities;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+const getSingleFacilityFromDB = async (id: string) => {
+  const result = await Facility.findById(id);
+
+  return result;
+};
 
 const updateFacilityIntoDB = async (
   id: string,
   payload: Partial<TFacility>
 ) => {
   const { ...updatedFacilityData } = payload;
-  console.log("service:", updateFacilityIntoDB);
-
-  // const modifiedUpdatedData: Record<string, unknown> = {
-  //   ...remainingFacilityData,
-  // };
-
-  // if (name && Object.keys(name).length) {
-  //   for (const [key, value] of Object.entries(name)) {
-  //     modifiedUpdatedData[`name.${key}`] = value;
-  //   }
-  // }
 
   const result = await Facility.findByIdAndUpdate(id, updatedFacilityData, {
     new: true,
@@ -35,7 +39,21 @@ const updateFacilityIntoDB = async (
   return result;
 };
 
+const deleteFacilityFromDB = async (id: string) => {
+  const result = await Facility.findByIdAndUpdate(
+    id,
+    { isDeleted: true },
+    {
+      new: true,
+    }
+  );
+  return result;
+};
+
 export const FacilityService = {
   createFacilityIntoDB,
   updateFacilityIntoDB,
+  deleteFacilityFromDB,
+  getAllFacilitiesFromDB,
+  getSingleFacilityFromDB,
 };
