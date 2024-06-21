@@ -1,6 +1,7 @@
 # Sports Facility Booking Server
 
 This is a simple TypeScript Express server that serves sports facility booking system including authentication and zod validation. It includes routing, middleware, and error handling.
+Live: https://sports-facility-booking-platform-silk.vercel.app/
 
 ## Prerequisites
 
