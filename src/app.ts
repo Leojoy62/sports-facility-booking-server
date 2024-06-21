@@ -12,6 +12,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ origin: ["http://localhost:5173"] }));
 
+app.get("/", (req, res) => {
+  res.send("Hello from Sports Facility Booking Platform!");
+});
+
 // application routes
 app.use("/api", router);
 
