@@ -4,15 +4,15 @@ exports.Booking = void 0;
 const mongoose_1 = require("mongoose");
 const bookingSchema = new mongoose_1.Schema({
     date: {
-        type: Date,
+        type: String,
         required: true,
     },
     startTime: {
-        type: Date,
+        type: String,
         required: true,
     },
     endTime: {
-        type: Date,
+        type: String,
         required: true,
     },
     user: {
@@ -29,7 +29,7 @@ const bookingSchema = new mongoose_1.Schema({
     },
     isBooked: {
         type: String,
-        enum: ["confirmed", "unconfirmed", "cancelled"],
+        enum: ["confirmed", "unconfirmed", "canceled"],
     },
 });
-exports.Booking = (0, mongoose_1.model)("User", bookingSchema);
+exports.Booking = (0, mongoose_1.model)("Booking", bookingSchema);

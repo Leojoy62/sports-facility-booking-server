@@ -12,22 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthControllers = void 0;
-const http_status_1 = __importDefault(require("http-status"));
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
-const sendResponse_1 = __importDefault(require("../utils/sendResponse"));
-const auth_service_1 = require("./auth.service");
-const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield auth_service_1.AuthServices.loginUser(req.body);
-    const { user, accessToken } = result;
-    (0, sendResponse_1.default)(res, {
-        success: true,
-        statusCode: http_status_1.default.OK,
-        message: "User is logged in succesfully!",
-        token: accessToken,
-        data: user,
-    });
-}));
-exports.AuthControllers = {
-    loginUser,
+const validateRequest = (schema) => {
+    return (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        yield schema.parseAsync({
+            body: req.body,
+            cookies: req.cookies,
+        });
+        next();
+    }));
 };
+exports.default = validateRequest;

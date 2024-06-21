@@ -27,7 +27,6 @@ const userSchema = new mongoose_1.Schema({
     password: {
         type: String,
         required: true,
-        select: 0,
     },
     phone: {
         type: String,
@@ -55,9 +54,10 @@ userSchema.post("save", function (doc, next) {
 });
 userSchema.statics.isUserExistsByEmail = function (email) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield exports.User.findOne({ email }).select("+password");
+        return yield exports.User.findOne({ email });
     });
 };
+// .select("+password")
 userSchema.statics.isPasswordMatched = function (plainTextPassword, hashedPassword) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield bcrypt_1.default.compare(plainTextPassword, hashedPassword);

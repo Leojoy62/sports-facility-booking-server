@@ -16,10 +16,12 @@ exports.AuthServices = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const AppError_1 = __importDefault(require("../errors/AppError"));
 const user_model_1 = require("../modules/user/user.model");
+const auth_utils_1 = require("./auth.utils");
+const config_1 = __importDefault(require("../config"));
 const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     // checking if the user is exist
-    const user = yield user_model_1.User.isUserExistsByEmail(payload.email);
-    console.log(user);
+    // const user = await User.isUserExistsByEmail(payload.email);
+    const user = yield user_model_1.User.findOne({ email: payload.email }).lean();
     if (!user) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, "This user is not found !");
     }
@@ -27,25 +29,16 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     if (!(yield user_model_1.User.isPasswordMatched(payload === null || payload === void 0 ? void 0 : payload.password, user === null || user === void 0 ? void 0 : user.password)))
         throw new AppError_1.default(http_status_1.default.FORBIDDEN, "Password do not matched");
     //create token and sent to the  client
-    // const jwtPayload = {
-    //   userId: user.id,
-    //   role: user.role,
-    // };
-    // const accessToken = createToken(
-    //   jwtPayload,
-    //   config.jwt_access_secret as string,
-    //   config.jwt_access_expires_in as string,
-    // );
-    // const refreshToken = createToken(
-    //   jwtPayload,
-    //   config.jwt_refresh_secret as string,
-    //   config.jwt_refresh_expires_in as string,
-    // );
+    const jwtPayload = {
+        userEmail: user.email,
+        role: user.role,
+    };
+    const accessToken = (0, auth_utils_1.createToken)(jwtPayload, config_1.default.jwt_access_secret, config_1.default.jwt_access_expires);
+    const userObject = user;
+    delete userObject.password;
     return {
-        user,
-        //   accessToken,
-        //   refreshToken,
-        //   needsPasswordChange: user?.needsPasswordChange,
+        user: userObject,
+        accessToken,
     };
 });
 exports.AuthServices = {

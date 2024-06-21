@@ -24,7 +24,6 @@ exports.UserService = void 0;
 const user_model_1 = require("./user.model");
 const createUserIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // payload.role = "user";
         const user = yield user_model_1.User.create(payload);
         const _a = user.toObject(), { password } = _a, userWithoutPassword = __rest(_a, ["password"]);
         return userWithoutPassword;
