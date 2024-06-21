@@ -3,8 +3,6 @@ import { User } from "./user.model";
 
 const createUserIntoDB = async (payload: TUser) => {
   try {
-    // payload.role = "user";
-
     const user = await User.create(payload);
 
     const { password, ...userWithoutPassword } = user.toObject();

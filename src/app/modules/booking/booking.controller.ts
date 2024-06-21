@@ -4,7 +4,7 @@ import sendResponse from "../../utils/sendResponse";
 import { BookingServices } from "./booking.service";
 import { Facility } from "../facility/facility.model";
 import { User } from "../user/user.model";
-import { string } from "zod";
+
 import { Types } from "mongoose";
 import { Request, Response } from "express";
 import moment from "moment";
@@ -45,6 +45,15 @@ const createBooking = catchAsync(async (req, res) => {
 const getAllBookings = catchAsync(async (req, res) => {
   const result = await BookingServices.getAllBookingsFromDB();
 
+  if (!result.length) {
+    return sendResponse(res, {
+      statusCode: httpStatus.NOT_FOUND,
+      success: false,
+      message: "No Data Found",
+      data: [],
+    });
+  }
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -70,6 +79,15 @@ const getAllBookingsByUser = catchAsync(async (req, res) => {
   const user = await User.findOne({ email: req.user.userEmail });
   const userId = user?._id as Types.ObjectId;
   const result = await BookingServices.getAllBookingsByUserFromDB(userId);
+
+  if (!result.length) {
+    return sendResponse(res, {
+      statusCode: httpStatus.NOT_FOUND,
+      success: false,
+      message: "No Data Found",
+      data: [],
+    });
+  }
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

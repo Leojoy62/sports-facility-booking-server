@@ -38,6 +38,15 @@ const getSingleFacility = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await FacilityService.getSingleFacilityFromDB(id);
 
+  if (!result) {
+    return sendResponse(res, {
+      statusCode: httpStatus.NOT_FOUND,
+      success: false,
+      message: "No Data Found",
+      data: [],
+    });
+  }
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

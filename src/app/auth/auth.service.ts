@@ -7,7 +7,9 @@ import config from "../config";
 
 const loginUser = async (payload: TLoginUser) => {
   // checking if the user is exist
-  const user = await User.isUserExistsByEmail(payload.email);
+  // const user = await User.isUserExistsByEmail(payload.email);
+
+  const user = await User.findOne({ email: payload.email }).lean();
 
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "This user is not found !");
@@ -31,18 +33,12 @@ const loginUser = async (payload: TLoginUser) => {
     config.jwt_access_expires as string
   );
 
-  // const refreshToken = createToken(
-  //   jwtPayload,
-  //   config.jwt_refresh_secret as string,
-  //   config.jwt_refresh_expires_in as string,
-  // );
-
-  //   const { password, ...userWithoutPassword } = user.toObject();
+  const userObject = user as { [key: string]: any; password?: string };
+  delete userObject.password;
 
   return {
-    user,
+    user: userObject,
     accessToken,
-    //   refreshToken,
   };
 };
 
