@@ -12,6 +12,10 @@ import moment from "moment";
 const createBooking = catchAsync(async (req, res) => {
   const bookingData = req.body;
 
+  if (!bookingData.facility) {
+    throw new Error("Facility ID is required");
+  }
+
   const bookedFacility = await Facility.findOne({
     _id: bookingData.facility,
   });

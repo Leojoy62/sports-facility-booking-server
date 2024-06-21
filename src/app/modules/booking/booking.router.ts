@@ -1,11 +1,18 @@
 import auth from "../../middlewares/auth";
+import validateRequest from "../../middlewares/validateRequest";
 import { USER_ROLE } from "../user/user.constant";
 import { BookingControllers } from "./booking.controller";
 import express from "express";
+import { bookingValidationSchema } from "./booking.validate";
 
 const router = express.Router();
 
-router.post("/", auth(USER_ROLE.user), BookingControllers.createBooking);
+router.post(
+  "/",
+  validateRequest(bookingValidationSchema),
+  auth(USER_ROLE.user),
+  BookingControllers.createBooking
+);
 router.get(
   "/user",
   auth(USER_ROLE.user),
