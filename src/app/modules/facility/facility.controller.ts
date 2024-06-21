@@ -17,6 +17,15 @@ const createFacility = catchAsync(async (req, res) => {
 const getAllFacilities = catchAsync(async (req, res) => {
   const result = await FacilityService.getAllFacilitiesFromDB();
 
+  if (!result.length) {
+    return sendResponse(res, {
+      statusCode: httpStatus.NOT_FOUND,
+      success: false,
+      message: "No Data Found",
+      data: [],
+    });
+  }
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
